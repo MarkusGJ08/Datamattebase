@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles.css";
+import "./main.css";
 
-/**
- * Enkel landingsside for lærere — CSS er flyttet til src/styles.css
- */
 
 const STORAGE_KEY = "teacher_resources_v1";
 
@@ -99,7 +96,6 @@ function App() {
                 <h1>Del & Last ned Oppgaver</h1>
                 <p className="subtitle">Et enkelt sted for lærere å dele og finne oppgaver andre har brukt.</p>
             </header>
-
             <main className="container">
                 <section className="left">
                     <div className="card">
@@ -134,7 +130,6 @@ function App() {
                             Oppgaver lagres lokalt i nettleseren (eksempel). For produksjon: koble til backend/lagringsløsning.
                         </p>
                     </div>
-
                     <div className="card">
                         <h2>Søk i oppgaver</h2>
                         <div className="row space-x" style={{ marginBottom: 12 }}>
@@ -147,7 +142,6 @@ function App() {
                                 ))}
                             </select>
                         </div>
-
                         <div>
                             {filtered().length === 0 ? (
                                 <p className="muted">Ingen ressurser funnet.</p>
@@ -173,7 +167,6 @@ function App() {
                         </div>
                     </div>
                 </section>
-
                 <aside className="right">
                     <div className="card">
                         <h3>Hvordan fungerer dette?</h3>
@@ -183,7 +176,6 @@ function App() {
                             <li>Eksempel bruker localStorage. I produksjon: lag backend + lagring (S3, SharePoint, osv.).</li>
                         </ul>
                     </div>
-
                     <div className="card">
                         <h3>Tips</h3>
                         <ol className="list">
@@ -194,14 +186,12 @@ function App() {
                     </div>
                 </aside>
             </main>
-
             <footer className="footer">
                 <small>Privat demo — lagringsmetode: localStorage. Bytt til server for deling mellom brukere.</small>
             </footer>
         </div>
     );
 }
-
 // Render
 const rootEl = document.getElementById("root") || document.body.appendChild(document.createElement("div"));
 rootEl.id = "root";
