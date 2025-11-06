@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import "./main.css";
-
+import "./styles.css";
 
 const STORAGE_KEY = "teacher_resources_v1";
 
@@ -89,6 +88,11 @@ function App() {
     }
 
     const categories = Array.from(new Set(["Alle", ...resources.map((r) => r.category || "Uspesifisert")]));
+
+    // 👉 knapp som går til main.jsx
+    function goToMain() {
+        window.location.href = "/src/mainPage.jsx";
+    }
 
     return (
         <div className="page">
@@ -183,6 +187,11 @@ function App() {
                             <li>Legg ved læringsmål i beskrivelsen.</li>
                             <li>Merk filer med klassetrinn og varighet.</li>
                         </ol>
+
+                        {/* 👇 Knappen som går til main.jsx */}
+                        <button onClick={goToMain} className="btn-primary" style={{ marginTop: 10 }}>
+                            Gå til hovedsiden
+                        </button>
                     </div>
                 </aside>
             </main>
@@ -192,6 +201,7 @@ function App() {
         </div>
     );
 }
+
 // Render
 const rootEl = document.getElementById("root") || document.body.appendChild(document.createElement("div"));
 rootEl.id = "root";

@@ -35,9 +35,13 @@ function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        
                     />
                 </div>
                 <button type="submit">Logg inn</button>
+                <div className="go to mainPage link">
+                    <a href="/mainPage">Gå til hovedsiden uten innlogging</a>
+                </div>
             </form>
         </div>
     );
