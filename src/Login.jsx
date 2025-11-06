@@ -186,6 +186,7 @@ function App() {
                             <li>Bruk tydelig tittel og fag/kategori.</li>
                             <li>Legg ved læringsmål i beskrivelsen.</li>
                             <li>Merk filer med klassetrinn og varighet.</li>
+                            <li>Dersom det er videregående oppgaver, merk studie/yrkes linje, å trinn.</li>
                         </ol>
 
                         {/* 👇 Knappen som går til main.jsx */}
