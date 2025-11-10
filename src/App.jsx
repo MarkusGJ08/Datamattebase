@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate, } from "react-router-dom";
 import "./styles.css";
 
 /* ---------------------- AuthContext ---------------------- */
@@ -174,6 +167,7 @@ function HomePage() {
       </div>
 
       <div className="grid">
+        <Card title="Dashboard" text="Få oversikt over dine data og aktiviteter." />
         <Card title="Snarveier" text="Legg til dine favorittfunksjoner her." />
         <Card title="Innstillinger" text="Tilpass Nettsiden etter dine behov." />
         <Card title="Oppdateringer" text="Hold deg oppdatert med ny funksjonalitet." />
@@ -239,6 +233,39 @@ function ProfilePage() {
           Lagre endringer
         </button>
         {saved && <p style={{ color: "green", marginTop: "10px" }}>Lagret!</p>}
+      </div>
+
+      <footer className="footer">
+        © {new Date().getFullYear()} Min Nettside — By Markus
+      </footer>
+    </div>
+  );
+}
+
+/*------------------------Utforsk----------------------*/
+function ExplorePage() {
+  const { user } = useAuth(); // Valgfritt, om du vil vise brukerinfo
+  const navigate = useNavigate();
+
+  return (
+    <div className="app">
+      <header className="header">
+        <Link to="/" className="logo">
+          <div className="mark">M</div>
+          <div className="title">Min Nettside</div>
+        </Link>
+        <div className="controls">
+          {user && <span>Hei, {user.name}</span>}
+          <Link to="/" className="btn btn-ghost">Hjem</Link>
+        </div>
+      </header>
+
+      <div className="hero">
+        <div className="text">
+          <h1>Utforsk</h1>
+          <p>Oppdag nye funksjoner og innhold her.</p>
+          <div className ="btn-ghost" onClick={() => navigate("/")}>Gå tilbake til Hjem</div>
+        </div>
       </div>
 
       <footer className="footer">
