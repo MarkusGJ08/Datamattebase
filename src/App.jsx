@@ -1,31 +1,16 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
-import './styles.css';
-
-
-/*
-  App.jsx
-  Enkel, selvstendig React-app (JSX) med:
-   - AuthContext (fake/auth-localStorage)
-   - Login-side
-   - Forside (beskyttet)
-   - Enkel klient-side routing
-   - Tailwind-klasser for rask styling
-
-  For å bruke: sett opp et React-prosjekt (vite/create-react-app), installer react-router-dom og framer-motion, og inkluder Tailwind.
-  npm install react-router-dom framer-motion
-*/
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import "./styles.css";
 
 /* ---------------------- AuthContext ---------------------- */
 const AuthContext = createContext(null);
-
-function Stil() {
-    return (
-        <div className ="stil">
-            hei verden!
-        </div>
-    );
-}
 
 function useAuth() {
   return useContext(AuthContext);
@@ -36,12 +21,11 @@ function AuthProvider({ children }) {
     try {
       const raw = localStorage.getItem("app_user");
       return raw ? JSON.parse(raw) : null;
-    // eslint-disable-next-line no-unused-vars
-    } catch (Error) {
+    } catch {
       return null;
     }
-    
   });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -51,10 +35,8 @@ function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     setLoading(true);
-    // Her kan du bytte ut mot et ekte API-kall.
     await new Promise((r) => setTimeout(r, 600));
 
-    // enkel validering (bare demonstrasjon)
     if (!email.includes("@") || password.length < 8) {
       setLoading(false);
       throw new Error("Ugyldig e-post eller passord");
@@ -66,25 +48,24 @@ function AuthProvider({ children }) {
     return fakeUser;
   };
 
-  const logout = () => {
-    setUser(null);
-  };
+  const logout = () => setUser(null);
+  const updateUser = (updates) => setUser((prev) => ({ ...prev, ...updates }));
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-/* ---------------------- ProtectedRoute ---------------------- */
+/* ---------------------- Protected Route ---------------------- */
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   return children;
 }
 
-/* ---------------------- Login-side ---------------------- */
+/* ---------------------- Login Page ---------------------- */
 function LoginPage() {
   const { login, loading } = useAuth();
   const [email, setEmail] = useState("");
@@ -104,67 +85,54 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
-        <h2 className="text-2xl font-semibold mb-4">Logg inn</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm mb-1">E-post</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-              placeholder="din@epost.no"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-1">Passord</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-              placeholder="••••••••"
-              required
-              minLength={4}
-            />
-          </div>
-
-          {error && <div className="text-red-600 text-sm">{error}</div>}
-
-          <button
-            type="submit"
-            className="w-full py-2 rounded-lg bg-sky-600 text-white font-medium disabled:opacity-60"
-            disabled={loading}
-          >
-            {loading ? "Logger inn…" : "Logg inn"}
+    <div className="app" style={{ maxWidth: "400px", marginTop: "10%" }}>
+      <div className="hero" style={{ flexDirection: "column", alignItems: "stretch" }}>
+        <h1 style={{ textAlign: "center", width: "100%" }}>Logg inn</h1>
+        <form onSubmit={handleSubmit} className="stack">
+          <input
+            type="email"
+            className="input"
+            placeholder="E-post"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            className="input"
+            placeholder="Passord"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={8}
+          />
+          {error && <p style={{ color: "red", fontSize: "14px" }}>{error}</p>}
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Logger inn..." : "Logg inn"}
           </button>
         </form>
-
-        <div className="mt-4 text-sm text-center">
-          <span>Har du ikke konto? </span>
-          <Link to="/signup" className="text-sky-600 underline">
+        <p style={{ textAlign: "center", marginTop: "10px", fontSize: "14px" }}>
+          Har du ikke konto?{" "}
+          <Link to="/signup" className="btn-ghost">
             Opprett en
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );
 }
 
-/* ---------------------- Signup (enkelt) ---------------------- */
+/* ---------------------- Signup Page ---------------------- */
 function SignupPage() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
-        <h2 className="text-2xl font-semibold mb-4">Opprett konto</h2>
-        <p className="text-sm text-slate-600 mb-6">Dette er bare et demo-skjema. Ved opprettelse blir du automatisk logget inn via login-siden.</p>
-        <button className="w-full py-2 rounded-lg bg-sky-600 text-white" onClick={() => navigate('/login')}>
+    <div className="app" style={{ maxWidth: "400px", marginTop: "10%" }}>
+      <div className="hero" style={{ flexDirection: "column", alignItems: "stretch" }}>
+        <h1 style={{ textAlign: "center", width: "100%" }}>Opprett konto</h1>
+        <p style={{ color: "var(--muted)", fontSize: "14px", textAlign: "center" }}>
+          Dette er bare et demo-skjema. Bruk login-siden etterpå.
+        </p>
+        <button className="btn btn-primary" onClick={() => navigate("/login")}>
           Gå til login
         </button>
       </div>
@@ -172,45 +140,125 @@ function SignupPage() {
   );
 }
 
-/* ---------------------- Forside (protected) ---------------------- */
+/* ---------------------- Home Page ---------------------- */
 function HomePage() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white">
-      <header className="flex items-center justify-between max-w-5xl mx-auto p-6">
-        <h1 className="text-2xl font-bold">Min App</h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-slate-700">Hei, {user?.name}</span>
-          <button onClick={logout} className="px-3 py-1 rounded-md border">Logg ut</button>
+    <div className="app">
+      <header className="header">
+        <Link to="/" className="logo">
+          <div className="mark">M</div>
+          <div className="title">Min App</div>
+        </Link>
+        <div className="controls">
+          <span>Hei, {user?.name}</span>
+          <button className="btn btn-ghost" onClick={() => navigate("/profile")}>
+            Profil
+          </button>
+          <button className="btn btn-ghost" onClick={logout}>
+            Logg ut
+          </button>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto p-6">
-        <section className="bg-white rounded-2xl shadow p-6">
-          <h2 className="text-xl font-semibold mb-2">Forside</h2>
-          <p className="text-slate-600">Velkommen til forsiden — dette innholdet er beskyttet og synlig kun når du er logget inn.</p>
-        </section>
+      <div className="hero">
+        <div className="text">
+          <h1>Velkommen tilbake</h1>
+          <p>Du er nå logget inn og kan bruke appens funksjoner.</p>
+        </div>
+        <div className="actions">
+          <button className="btn btn-primary">Utforsk</button>
+        </div>
+      </div>
 
-        <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card title="Profil" body={`E-post: ${user?.email}`} />
-          <Card title="Snarveier" body={"Legg til favorittfunksjoner her."} />
-        </section>
-      </main>
+      <div className="grid">
+        <Card title="Snarveier" text="Legg til dine favorittfunksjoner her." />
+        <Card title="Innstillinger" text="Tilpass appen etter dine behov." />
+        <Card title="Oppdateringer" text="Hold deg oppdatert med ny funksjonalitet." />
+      </div>
+
+      <footer className="footer">
+        © {new Date().getFullYear()} Min App — By Markus
+      </footer>
     </div>
   );
 }
 
-function Card({ title, body }) {
+/* ---------------------- Profile Page ---------------------- */
+function ProfilePage() {
+  const { user, updateUser, logout } = useAuth();
+  const navigate = useNavigate();
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    updateUser({ name, email });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 1500);
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow p-4">
-      <h3 className="font-medium mb-2">{title}</h3>
-      <div className="text-sm text-slate-600">{body}</div>
+    <div className="app">
+      <header className="header">
+        <Link to="/" className="logo">
+          <div className="mark">M</div>
+          <div className="title">Min App</div>
+        </Link>
+        <div className="controls">
+          <button className="btn btn-ghost" onClick={() => navigate("/")}>
+            Hjem
+          </button>
+          <button className="btn btn-ghost" onClick={logout}>
+            Logg ut
+          </button>
+        </div>
+      </header>
+
+      <div className="hero" style={{ flexDirection: "column", alignItems: "flex-start" }}>
+        <h1>Profil</h1>
+        <p>Se og rediger informasjonen din.</p>
+      </div>
+
+      <div className="card" style={{ marginTop: "20px", maxWidth: "500px" }}>
+        <label>Navn</label>
+        <input
+          className="input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <label style={{ marginTop: "10px" }}>E-post</label>
+        <input
+          className="input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button className="btn btn-primary" style={{ marginTop: "15px" }} onClick={handleSave}>
+          Lagre endringer
+        </button>
+        {saved && <p style={{ color: "green", marginTop: "10px" }}>Lagret!</p>}
+      </div>
+
+      <footer className="footer">
+        © {new Date().getFullYear()} Min App — By Markus
+      </footer>
     </div>
   );
 }
 
-/* ---------------------- App (routing + eksport) ---------------------- */
+/* ---------------------- Card ---------------------- */
+function Card({ title, text }) {
+  return (
+    <div className="card">
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </div>
+  );
+}
+
+/* ---------------------- App ---------------------- */
 export default function App() {
   return (
     <AuthProvider>
@@ -224,11 +272,16 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-
-          {/* fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
