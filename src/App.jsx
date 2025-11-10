@@ -150,7 +150,7 @@ function HomePage() {
       <header className="header">
         <Link to="/" className="logo">
           <div className="mark">M</div>
-          <div className="title">Min App</div>
+          <div className="title">Min Nettside</div>
         </Link>
         <div className="controls">
           <span>Hei, {user?.name}</span>
@@ -166,7 +166,7 @@ function HomePage() {
       <div className="hero">
         <div className="text">
           <h1>Velkommen tilbake</h1>
-          <p>Du er nå logget inn og kan bruke appens funksjoner.</p>
+          <p>Du er nå logget inn og kan bruke Nettsidens funksjoner.</p>
         </div>
         <div className="actions">
           <button className="btn btn-primary">Utforsk</button>
@@ -175,12 +175,12 @@ function HomePage() {
 
       <div className="grid">
         <Card title="Snarveier" text="Legg til dine favorittfunksjoner her." />
-        <Card title="Innstillinger" text="Tilpass appen etter dine behov." />
+        <Card title="Innstillinger" text="Tilpass Nettsiden etter dine behov." />
         <Card title="Oppdateringer" text="Hold deg oppdatert med ny funksjonalitet." />
       </div>
 
       <footer className="footer">
-        © {new Date().getFullYear()} Min App — By Markus
+        © {new Date().getFullYear()} Min Nettside — By Markus
       </footer>
     </div>
   );
@@ -205,7 +205,7 @@ function ProfilePage() {
       <header className="header">
         <Link to="/" className="logo">
           <div className="mark">M</div>
-          <div className="title">Min App</div>
+          <div className="title">Min Nettside</div>
         </Link>
         <div className="controls">
           <button className="btn btn-ghost" onClick={() => navigate("/")}>
@@ -242,7 +242,7 @@ function ProfilePage() {
       </div>
 
       <footer className="footer">
-        © {new Date().getFullYear()} Min App — By Markus
+        © {new Date().getFullYear()} Min Nettside — By Markus
       </footer>
     </div>
   );
