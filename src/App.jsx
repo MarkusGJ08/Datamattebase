@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate, } from "react-router-dom";
 import "./styles.css";
+import MyButton from './Utforsk';
 
 /* ---------------------- AuthContext ---------------------- */
 const AuthContext = createContext(null);
@@ -243,15 +244,7 @@ function ProfilePage() {
 }
 
 /*------------------------Utforsk----------------------*/
-import MyButton from './Utforsk';
 
-function AppButton() {
-  return (
-    <div className="AppButton">
-      <MyButton />
-    </div>
-  );
-}
 /* ---------------------- Card ---------------------- */
 function Card({ title, text }) {
   return (
