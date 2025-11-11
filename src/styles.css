@@ -216,6 +216,89 @@ body {
 }
 
 /* Buttons */
+
+/* AppButton component */
+.app-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1;
+    color: #fff;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 8px 26px rgba(37,99,235,0.12);
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease, filter .12s ease;
+    text-decoration: none;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Interaction states */
+.app-button:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(37,99,235,0.15); }
+.app-button:active { transform: translateY(1px); }
+.app-button:focus { box-shadow: var(--focus); outline: none; }
+
+/* Small pieces inside the button */
+.app-button .icon { display: inline-flex; width: 18px; height: 18px; align-items: center; justify-content: center; }
+.app-button .label { display: inline-block; }
+
+/* Sizes */
+.app-button.size-sm { padding: 8px 12px; border-radius: 10px; font-size: 13px; }
+.app-button.size-lg { padding: 14px 20px; border-radius: 14px; font-size: 15px; }
+
+/* Variants */
+.app-button.ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid rgba(37,99,235,0.12);
+    box-shadow: none;
+}
+.app-button.secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid rgba(15,23,42,0.06);
+    box-shadow: 0 6px 16px rgba(2,6,23,0.04);
+}
+
+/* Disabled / busy states */
+.app-button[disabled],
+.app-button[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    filter: grayscale(.04);
+    box-shadow: none;
+}
+
+/* Loading indicator: set aria-busy="true" to show spinner */
+.app-button[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.95;
+}
+.app-button[aria-busy="true"] .label { visibility: hidden; }
+.app-button .spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-top-color: currentColor;
+    box-sizing: border-box;
+    animation: appbtn-spin 0.9s linear infinite;
+}
+.app-button[aria-busy="true"] .spinner { display: inline-block; }
+
+/* Respect reduced motion preferences */
+@keyframes appbtn-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    .app-button, .app-button .spinner { transition: none; animation: none; transform: none; }
+}
 .btn {
     display: inline-flex;
     align-items: center;
