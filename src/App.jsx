@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate, } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import "./styles.css";
-import MyButton from './Utforsk';
+import PublishPage from './PublishPage';
 
 /* ---------------------- AuthContext ---------------------- */
 const AuthContext = createContext(null);
@@ -163,7 +163,9 @@ function HomePage() {
           <p>Du er nå logget inn og kan bruke Nettsidens funksjoner.</p>
         </div>
         <div className="actions">
-          <button className="AppButton">Utforsk</button>
+          <button className="btn btn-primary" onClick={() => navigate("/publish")}>
+            Utforsk & Publiser
+          </button>
         </div>
       </div>
 
@@ -219,17 +221,9 @@ function ProfilePage() {
 
       <div className="card" style={{ marginTop: "20px", maxWidth: "500px" }}>
         <label>Navn</label>
-        <input
-          className="input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <input className="input" value={name} onChange={(e) => setName(e.target.value)} />
         <label style={{ marginTop: "10px" }}>E-post</label>
-        <input
-          className="input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
         <button className="btn btn-primary" style={{ marginTop: "15px" }} onClick={handleSave}>
           Lagre endringer
         </button>
@@ -242,8 +236,6 @@ function ProfilePage() {
     </div>
   );
 }
-
-/*------------------------Utforsk----------------------*/
 
 /* ---------------------- Card ---------------------- */
 function Card({ title, text }) {
@@ -274,6 +266,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/publish"
+            element={
+              <ProtectedRoute>
+                <PublishPage />
               </ProtectedRoute>
             }
           />
