@@ -143,8 +143,8 @@ function HomePage() {
     <div className="app">
       <header className="header">
         <Link to="/" className="logo">
-          <div className="mark">M</div>
-          <div className="title">Min Nettside</div>
+          <div className="mark">DM</div>
+          <div className="title">DataMattebase</div>
         </Link>
         <div className="controls">
           <span>Hei, {user?.name}</span>
@@ -201,8 +201,8 @@ function ProfilePage() {
     <div className="app">
       <header className="header">
         <Link to="/" className="logo">
-          <div className="mark">M</div>
-          <div className="title">Min Nettside</div>
+          <div className="mark">DM</div>
+          <div className="title">DataMattebase</div>
         </Link>
         <div className="controls">
           <button className="btn btn-ghost" onClick={() => navigate("/")}>
@@ -231,7 +231,7 @@ function ProfilePage() {
       </div>
 
       <footer className="footer">
-        © {new Date().getFullYear()} Min Nettside — By Markus
+        © {new Date().getFullYear()} DataMattebase — By Markus
       </footer>
     </div>
   );
