@@ -86,7 +86,7 @@ function HomePage() {
       <div className="hero">
         <div className="text">
           <h1>Velkommen tilbake</h1>
-          <p>Du er nå logget inn og kan bruke Nettsidens funksjoner.</p>
+          <p>Du er nå logget inn og kan bruke Nettsidens funksjoner</p>
         </div>
         <div className="actions">
           <button className="btn btn-primary" onClick={() => navigate("/publish")}>
@@ -96,7 +96,7 @@ function HomePage() {
       </div>
 
       <footer className="footer">
-        © {new Date().getFullYear()} Min Nettside — By Markus
+        © {new Date().getFullYear()} Min Nettside — Laget av Markus Gjerde 1IKA Sjøvegan VGS
       </footer>
     </div>
   );
