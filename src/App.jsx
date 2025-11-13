@@ -60,6 +60,56 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+/* ---------------------- Login Page ---------------------- */
+function LoginPage() {
+  const { login, user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user) navigate("/"); // Hvis allerede innlogget
+  }, [user, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div className="login-page">
+      <h2>Logg inn</h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        <input
+          type="email"
+          placeholder="E-post"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Passord (minst 8 tegn)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        {error && <p className="error">{error}</p>}
+        <button className="btn btn-primary" disabled={loading}>
+          {loading ? "Logger inn..." : "Logg inn"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 /* ---------------------- Home Page ---------------------- */
 function HomePage() {
   const { user, logout } = useAuth();
@@ -121,6 +171,7 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/"
             element={
@@ -151,4 +202,3 @@ export default function App() {
     </AuthProvider>
   );
 }
-
