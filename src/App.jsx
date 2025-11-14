@@ -1,13 +1,15 @@
+// App.jsx (oppdatert routing for å bruke DashboardPage)
 import React, { useState, useEffect, useContext, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 import PublishPage from './PublishPage';
 import PublishForm from './PublishForm';
+import DashboardPage from './DashboardPage'; // ny side
 
 /* ---------------------- AuthContext ---------------------- */
 const AuthContext = createContext(null);
 
-function useAuth() {
+export function useAuth() {
   return useContext(AuthContext);
 }
 
@@ -110,49 +112,7 @@ function LoginPage() {
   );
 }
 
-/* ---------------------- Home Page ---------------------- */
-function HomePage() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  return (
-    <div className="app">
-      <header className="header">
-        <Link to="/" className="logo">
-          <div className="mark">DM</div>
-          <div className="title">Min Nettside</div>
-        </Link>
-        <div className="controls">
-          <span>Hei, {user?.name}</span>
-          <button className="btn btn-ghost" onClick={() => navigate("/profile")}>
-            Profil
-          </button>
-          <button className="btn btn-ghost" onClick={logout}>
-            Logg ut
-          </button>
-        </div>
-      </header>
-
-      <div className="hero">
-        <div className="text">
-          <h1>Velkommen tilbake!</h1>
-          <p>Du er nå logget inn og kan bruke Nettsidens funksjoner</p>
-        </div>
-        <div className="actions">
-          <button className="btn btn-primary" onClick={() => navigate("/publish")}>
-            Utforsk & Publiser
-          </button>
-        </div>
-      </div>
-
-      <footer className="footer">
-        © {new Date().getFullYear()} DataMattebase — Laget av Markus Gjerde 1IKA Sjøvegan VGS
-      </footer>
-    </div>
-  );
-}
-
-/* ---------------------- App ---------------------- */
+/* ---------------------- App (root) ---------------------- */
 export default function App() {
   const [posts, setPosts] = useState(() => {
     try {
@@ -172,14 +132,17 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+
           <Route
             path="/"
             element={
               <ProtectedRoute>
-                <HomePage />
+                {/* Dashboard receives posts, setPosts and auth helpers */}
+                <DashboardPageWrapper posts={posts} setPosts={setPosts} />
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/publish"
             element={
@@ -201,4 +164,10 @@ export default function App() {
       </Router>
     </AuthProvider>
   );
+}
+
+/* Small wrapper so we can pass auth context into DashboardPage as a prop */
+function DashboardPageWrapper({ posts, setPosts }) {
+  const auth = useContext(AuthContext);
+  return <DashboardPage posts={posts} setPosts={setPosts} auth={auth} />;
 }
